@@ -1,38 +1,133 @@
-.App {
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100%; 
+}
+
+#heading1{
+  margin: 0;
+  color: rgb(247, 247, 251);
+  padding-left: 10px;
+  font-size: 50px;
+  position: relative;
+}
+
+#navBar{
+  border: 1px solid black;
+  background: linear-gradient(rgb(96, 121, 125), rgb(34, 88, 110), rgb(14, 169, 235));
+  Padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+#navBar button {
+  background-color: white; 
+  color: #130f0e; 
+  font-weight: bold;
+  border: 1px solid #090200; 
+  border-radius: 5px; 
+  padding: 8px 8px; 
+  cursor: pointer; 
+  position: absolute;
+  right: 50%;
+}
+
+#navBar button:hover {
+  background-color: #1c5f2f; 
+  color: white; 
+}
+
+#studentForm{
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 20px;
+  margin: 20px auto;
+}
+
+label {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+input, select {          
+  padding: 10px;                
+  margin-bottom: 15px;         
+  border: 1px solid #ccc;      
+  border-radius: 5px;
+  width: 100%;
+}
+
+input {
+  width: calc(100% - 20px);
+}
+
+#submitBtn{
+  font-weight: bold;
+  border: 1px solid #090200; 
+  background-color: white;
+  border-radius: 5px;
+  font-size: large;
+  margin-bottom: 10px;
+  margin-left: 40%;
+  cursor: pointer;
+  padding: 5px 5px;
+}
+
+#submitBtn:hover {
+  background-color: #1a5d36; 
+  color: white; 
+}
+
+#dashboard{
+  border: 1px solid black;
+  margin: 2.5% 10%;
+  width: 80%;
+  
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 10px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+th {
+  background-color: #f2f2f2;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#editBtn{
+  margin-right: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#editBtn, #delBtn{
+  background-color: white; 
+  color: #130f0e; 
+  font-weight: bold;
+  border: 1px solid #090200; 
+  border-radius: 5px; 
+  padding: 8px 8px; 
+  cursor: pointer; 
 }
 
-.App-link {
-  color: #61dafb;
+#editBtn:hover {
+  background-color: #dcd10f; 
+  color: white; 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#delBtn:hover{
+  background-color: #ec2812; 
+  color: white; 
 }
