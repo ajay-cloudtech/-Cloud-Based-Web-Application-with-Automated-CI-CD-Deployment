@@ -10,7 +10,7 @@ html, body {
 
 #heading1{
   margin: 0;
-  color: rgb(247, 247, 251);
+  color: rgb(20, 20, 58);
   padding-left: 10px;
   font-size: 50px;
   position: relative;
@@ -19,9 +19,16 @@ html, body {
 #navBar{
   border: 1px solid black;
   background: linear-gradient(rgb(96, 121, 125), rgb(34, 88, 110), rgb(14, 169, 235));
-  Padding: 0;
+  Padding: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+#navBar h1 {
+  margin: 0; /* Remove default margin from heading */
+  font-size: 50px; /* Keep your existing font size */
+  color: rgb(21, 23, 21);
 }
 
 #navBar button {
@@ -30,14 +37,13 @@ html, body {
   font-weight: bold;
   border: 1px solid #090200; 
   border-radius: 5px; 
-  padding: 8px 8px; 
+  padding: 8px 16px; 
   cursor: pointer; 
-  position: absolute;
-  right: 50%;
+  margin-left: 20px;
 }
 
 #navBar button:hover {
-  background-color: #1c5f2f; 
+  background-color: #78b923; 
   color: white; 
 }
 
@@ -130,4 +136,24 @@ th {
 #delBtn:hover{
   background-color: #ec2812; 
   color: white; 
+}
+
+#loginForm{
+  width: 30%;
+  border: 1px solid rgb(204, 189, 189);
+  padding: 10px 10px;
+  margin-left: 10px;
+  border-radius: 20px;
+}
+
+#loginPara{
+  margin-left: 15px;
+}
+
+#signup{
+  width: 30%;
+  border: 1px solid rgb(204, 189, 189);
+  padding: 10px 10px;
+  margin-left: 10px;
+  border-radius: 20px;
 }

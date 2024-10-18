@@ -1,27 +1,23 @@
-import React from 'react'; 
+import React, { useState } from 'react'; 
 import NavBar from './NavBar';
 import StudentForm from './StudentForm';
 
-function AddStudents(){
-    
-    function toggleForm(){
-        
-        const form = document.getElementById('studentFormWrapper');
-        if (form.style.display === 'none' || form.style.display === ''){
-            form.style.display = 'block'; //show the form
-        }else{
-            form.style.display = 'none'; //hide the form
-        }
+function AddStudents() {
+    const [isFormVisible, setIsFormVisible] = useState(false); // Track form visibility
+
+    function toggleForm() {
+        setIsFormVisible(prevState => !prevState); // Toggle form visibility
     }
+
     function hideForm() {
-        const form = document.getElementById('studentFormWrapper');
-        form.style.display = 'none'; // hide the form
+        setIsFormVisible(false); // hide the form
     }
-    return(
+
+    return (
         <div>
-            <NavBar toggleForm={toggleForm} />
-            <div id='studentFormWrapper' style={{display: 'none' }}>
-            <StudentForm onSubmit={hideForm} />
+            <NavBar toggleForm={toggleForm} buttonLabel={isFormVisible ? 'Cancel' : 'Add Student'} />
+            <div id='studentFormWrapper' style={{ display: isFormVisible ? 'block' : 'none' }}>
+                <StudentForm onSubmit={hideForm} />
             </div>
         </div>
     );

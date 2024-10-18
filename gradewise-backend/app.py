@@ -2,18 +2,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from dotenv import load_dotenv
 import os
 
-load_dotenv()
-
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3001"}})
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 
-app.config["MONGO_URI"] = os.getenv("MONGO_URI")
-mongo = PyMongo(app)
-
-# MongoDB configuration (update the URI with your MongoDB connection string)
 app.config["MONGO_URI"] = "mongodb://127.0.0.1:27017/gradewise?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.1"
 mongo = PyMongo(app)
 
@@ -77,4 +70,5 @@ def handle_options(id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 

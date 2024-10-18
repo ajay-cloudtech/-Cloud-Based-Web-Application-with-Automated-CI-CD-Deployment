@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
-//const [<state variable>, <state update function>] = useState(<initial value>);
-
-function StudentDash(){
+function StudentDash() {
     const [students, setStudents] = useState([]);
+    const [editStudentId, setEditStudentId] = useState(null);  // Track the student being edited
+    const [tempStudentData, setTempStudentData] = useState({}); // Store temporary student data during edit
+
+    // Example options for dropdown fields (same as your form)
+    const courseOptions = ['Cloud Computing', 'Data Analytics', 'Machine Learning'];
+    const semesterOptions = ['1', '2', '3'];
+    const yearOptions = ['2024', '2025', '2026'];
+    const gradeOptions = ['A', 'B', 'C', 'D', 'E'];
 
     useEffect(() => {
         const fetchStudents = async () => {
@@ -13,12 +20,12 @@ function StudentDash(){
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                setStudents(data); 
+                setStudents(data);
             } catch (error) {
                 console.error('Error fetching students:', error);
             }
         };
-        fetchStudents(); 
+        fetchStudents();
     }, []);
 
     const handleDelete = async (id) => {
@@ -40,30 +47,25 @@ function StudentDash(){
         }
     };
 
-    const handleEdit = (student) => {
-        const newFirstName = prompt("Edit First Name:", student.firstName);
-        const newLastName = prompt("Edit Last Name:", student.lastName);
-        const newCourseName = prompt("Edit Course Name:", student.courseName);
-        const newSemesterName = prompt("Edit Semester Name:", student.semesterName);
-        const newYearNumber = prompt("Edit Year:", student.yearNumber);
-        const newGrade = prompt("Edit Grade:", student.grade);
+    const handleEditClick = (student) => {
+        setEditStudentId(student._id);
+        setTempStudentData(student);  // Initialize temp data with the current student's details
+    };
 
-        const updatedStudent = {
-            ...student,
-            firstName: newFirstName,
-            lastName: newLastName,
-            courseName: newCourseName,
-            semesterName: newSemesterName,
-            yearNumber: newYearNumber,
-            grade: newGrade,
-        };
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setTempStudentData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
 
-        handleUpdate(student._id, updatedStudent);
+    const handleSave = (id) => {
+        handleUpdate(id, tempStudentData);
+        setEditStudentId(null);  // Exit edit mode
     };
 
     const handleUpdate = async (id, updatedStudent) => {
-        console.log("Updating student ID:", id);  // Log the student ID
-        console.log("Updated data:", updatedStudent);  // Log the updated data
         const { _id, ...dataToUpdate } = updatedStudent;  // Exclude _id from the updated data
         try {
             const response = await fetch(`http://localhost:5000/api/students/${id}`, {
@@ -93,34 +95,131 @@ function StudentDash(){
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Course Name</th>
+                        <th>Course</th>
                         <th>Semester</th>
                         <th>Year</th>
                         <th>Grade</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {students
-                    .filter(student => student.firstName && student.lastName)
-                    .map(function(student){
-                        return(
+                    {students.map(student => (
                         <tr key={student._id}>
-                            <td>{student.firstName}</td>
-                            <td>{student.lastName}</td>
-                            <td>{student.courseName}</td>
-                            <td>{student.semesterName}</td>
-                            <td>{student.yearNumber}</td>
-                            <td>{student.grade}</td>
                             <td>
-                                <button id = 'editBtn' onClick={() => handleEdit(student)}><i className="fas fa-edit"></i></button>
+                                {editStudentId === student._id ? (
+                                    <input
+                                        type="text"
+                                        name="firstName"
+                                        value={tempStudentData.firstName}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    student.firstName
+                                )}
                             </td>
                             <td>
-                                <button id = 'delBtn' onClick={() => handleDelete(student._id)}><i className="fas fa-trash"></i></button>
+                                {editStudentId === student._id ? (
+                                    <input
+                                        type="text"
+                                        name="lastName"
+                                        value={tempStudentData.lastName}
+                                        onChange={handleInputChange}
+                                    />
+                                ) : (
+                                    student.lastName
+                                )}
                             </td>
-                        </tr>);
-                    })}
+                            <td>
+                                {editStudentId === student._id ? (
+                                    <select
+                                        name="courseName"
+                                        value={tempStudentData.courseName}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">Select a course</option>
+                                        {courseOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    student.courseName
+                                )}
+                            </td>
+                            <td>
+                                {editStudentId === student._id ? (
+                                    <select
+                                        name="semesterName"
+                                        value={tempStudentData.semesterName}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">Select semester</option>
+                                        {semesterOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    student.semesterName
+                                )}
+                            </td>
+                            <td>
+                                {editStudentId === student._id ? (
+                                    <select
+                                        name="yearNumber"
+                                        value={tempStudentData.yearNumber}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">Select year</option>
+                                        {yearOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    student.yearNumber
+                                )}
+                            </td>
+                            <td>
+                                {editStudentId === student._id ? (
+                                    <select
+                                        name="grade"
+                                        value={tempStudentData.grade}
+                                        onChange={handleInputChange}
+                                    >
+                                        <option value="">Select grade</option>
+                                        {gradeOptions.map((option) => (
+                                            <option key={option} value={option}>
+                                                {option}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : (
+                                    student.grade
+                                )}
+                            </td>
+                            <td>
+                                {editStudentId === student._id ? (
+                                    <>
+                                        <button onClick={() => handleSave(student._id)}>Save</button>
+                                        <button onClick={() => setEditStudentId(null)}>Cancel</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <button id='editBtn' onClick={() => handleEditClick(student)}>
+                                            <i className="fas fa-edit"></i>
+                                        </button>
+                                        <button id='delBtn' onClick={() => handleDelete(student._id)}>
+                                            <i className="fas fa-trash"></i>
+                                        </button>
+                                    </>
+                                )}
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
