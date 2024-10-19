@@ -8,7 +8,7 @@ from dotenv import load_dotenv  # Import dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-app = Flask(__name__, static_folder='build', static_url_path='')
+app = Flask(__name__, static_folder='build', static_url_path='/build')
 
 # CORS setup: Allow requests from your frontend
 CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -78,6 +78,10 @@ def update_student(id):
     return jsonify({"error": "Student not found or no changes made"}), 404
 
 # Serve static files
+@app.route('/build/<path:path>')
+def serve_static_files(path):
+    return send_from_directory('build', path)
+
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_react_app(path):
@@ -85,16 +89,9 @@ def serve_react_app(path):
     if path.startswith('api'):
         return jsonify({'error': 'API route not found'}), 404
     # Return the React app's index.html for all other paths
+    if path and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
     return send_from_directory(app.static_folder, 'index.html')
-
-# OPTIONS handling is usually not necessary with Flask-CORS, but it's kept if you want to customize it.
-@app.route('/api/students/<id>', methods=['OPTIONS'])
-def handle_options(id):
-    response = jsonify()
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')  # Match frontend URL
-    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-    return response, 204  # Respond with no content
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000,debug=True)

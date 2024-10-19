@@ -18,7 +18,7 @@ function App() {
                             <Route path="/" element={<Navigate to="/login" />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/signup" element={<Signup />} />
-                            <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+                            <Route path="/dashboard" element={<DashboardRoute />} />
                             <Route path="*" element={<Navigate to="/login" />} />
                         </Routes>
                     </main>
@@ -29,18 +29,16 @@ function App() {
 }
 
 // PrivateRoute checks if the user is authenticated before allowing access to a protected route
-function PrivateRoute({ children }) {
-  const { currentUser, loading } = useAuth();
-
-  console.log("Current User:", currentUser); // Log to check current user
-  console.log("Loading state:", loading);    // Log loading state
-
-  if (loading) {
-      return <div>Loading...</div>;
+function DashboardRoute() {
+    const { currentUser, loading } = useAuth();
+  
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+  
+    // If user is authenticated, render the dashboard directly
+    return currentUser ? <Dashboard /> : <Navigate to="/login" />;
   }
-
-  return currentUser ? children : <Navigate to="/login" />;
-}
 
 function Dashboard() {
     return (
