@@ -82,8 +82,12 @@ def update_student(id):
     return jsonify({"error": "Student not found or no changes made"}), 404
 
 # Serve static files
+@app.route('/', defaults={'path': ''})
 @app.route('/<path:path>', methods=['GET'])
 def serve_react_app(path):
+     # If the path starts with 'api/', don't serve the React app
+    if path.startswith('api'):
+        return jsonify({'error': 'API route not found'}), 404
     return send_from_directory(app.static_folder, path)
 
 # OPTIONS handling is usually not necessary with Flask-CORS, but it's kept if you want to customize it.
