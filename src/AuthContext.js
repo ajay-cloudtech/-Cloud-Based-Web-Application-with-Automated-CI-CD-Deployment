@@ -3,38 +3,31 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import app from './firebaseConfig';
 
-const AuthContext = createContext(); // Create the AuthContext
+const AuthContext = createContext();
 
-// Provide authentication context to the app
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
   const auth = getAuth(app);
 
-  // On mount, fetch user from localStorage and Firebase authentication
   useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      setCurrentUser(JSON.parse(userData)); // Restore user state from localStorage
-    }
-
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-          setCurrentUser(user);  // Update the current user state
-          setLoading(false); // Done loading once we know the auth state
+          setCurrentUser(user);  
+          setLoading(false); 
           
           if (user) {
-            localStorage.setItem('user', JSON.stringify(user)); // Store user in localStorage
+            localStorage.setItem('user', JSON.stringify(user)); 
           } else {
-            localStorage.removeItem('user'); // Remove user from localStorage
+            localStorage.removeItem('user'); 
           }
         });
-        return unsubscribe; // Cleanup function to unsubscribe
+        return unsubscribe;
       })
       .catch(error => {
         console.error("Failed to set persistence", error);
-        setLoading(false); // Handle persistence error
+        setLoading(false);
       });
   }, [auth]);
 
@@ -47,19 +40,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('user'); // Clear user from localStorage on logout
+    localStorage.removeItem('user');
     return signOut(auth);
   };
 
-  // Expose currentUser, login, signup, logout, and loading
   return (
     <AuthContext.Provider value={{ currentUser, signup, login, logout, loading }}>
-      {!loading && children} {/* Ensure children are rendered after loading */}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
 
-// Hook to use the AuthContext values
 export const useAuth = () => {
   return useContext(AuthContext);
 };

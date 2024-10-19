@@ -17,10 +17,6 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 mongo = PyMongo(app)
 
-@app.route('/')
-def home():
-    return send_from_directory(app.static_folder, 'index.html')
-
 @app.route('/api/students', methods=['POST'])
 def add_student():
     data = request.json
@@ -88,7 +84,7 @@ def serve_react_app(path):
      # If the path starts with 'api/', don't serve the React app
     if path.startswith('api'):
         return jsonify({'error': 'API route not found'}), 404
-    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+    if path and os.path.exists(os.path.join(app.static_folder, path)):
         return send_from_directory(app.static_folder, path)
     return send_from_directory(app.static_folder, 'index.html')
 
