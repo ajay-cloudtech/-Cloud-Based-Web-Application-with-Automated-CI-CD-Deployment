@@ -83,7 +83,7 @@ def update_student(id):
 
 # Serve static files
 @app.route('/', defaults={'path': ''})
-@app.route('/<path:path>', methods=['GET'])
+@app.route('/<path:path>')
 def serve_react_app(path):
      # If the path starts with 'api/', don't serve the React app
     if path.startswith('api'):
