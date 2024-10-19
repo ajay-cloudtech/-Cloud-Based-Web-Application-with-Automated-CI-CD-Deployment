@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -8,10 +8,10 @@ from dotenv import load_dotenv  # Import dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='build', static_url_path='')
 
 # CORS setup: Allow requests from your frontend
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Use the MongoDB URI from the .env file
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
@@ -19,7 +19,7 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def home():
-    return "<h1>Welcome to the GradeWise API</h1><p>Use the /api/students endpoint to add a student.</p>"
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/api/students', methods=['POST'])
 def add_student():
@@ -80,6 +80,11 @@ def update_student(id):
         return jsonify({"message": "Student updated successfully"}), 200
     
     return jsonify({"error": "Student not found or no changes made"}), 404
+
+# Serve static files
+@app.route('/<path:path>', methods=['GET'])
+def serve_react_app(path):
+    return send_from_directory(app.static_folder, path)
 
 # OPTIONS handling is usually not necessary with Flask-CORS, but it's kept if you want to customize it.
 @app.route('/api/students/<id>', methods=['OPTIONS'])
