@@ -81,13 +81,11 @@ def update_student(id):
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve_react_app(path):
-     # If the path starts with 'api/', don't serve the React app
+    # If the path starts with 'api/', don't serve the React app
     if path.startswith('api'):
         return jsonify({'error': 'API route not found'}), 404
-    if path and os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
+    # Return the React app's index.html for all other paths
     return send_from_directory(app.static_folder, 'index.html')
-
 
 # OPTIONS handling is usually not necessary with Flask-CORS, but it's kept if you want to customize it.
 @app.route('/api/students/<id>', methods=['OPTIONS'])
