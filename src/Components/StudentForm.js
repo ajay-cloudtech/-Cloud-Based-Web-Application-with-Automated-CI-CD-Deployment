@@ -23,7 +23,7 @@ function StudentForm({onSubmit}){
 
         try {
             // Make POST request to Flask server
-            const response = await fetch('http://127.0.0.1:5000/api/students', {
+            const response = await fetch('http://3.250.99.241:5000/api/students', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
