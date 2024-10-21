@@ -15,7 +15,7 @@ function StudentDash() {
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const response = await fetch('http://54.155.197.147:5000/api/students');
+                const response = await fetch('http://54.155.197.147/api/students');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -31,7 +31,7 @@ function StudentDash() {
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this student?")) {
             try {
-                const response = await fetch(`http://54.155.197.147:5000/api/students/${id}`, {
+                const response = await fetch(`http://54.155.197.147/api/students/${id}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
@@ -68,7 +68,7 @@ function StudentDash() {
     const handleUpdate = async (id, updatedStudent) => {
         const { _id, ...dataToUpdate } = updatedStudent;  // Exclude _id from the updated data
         try {
-            const response = await fetch(`http://54.155.197.147:5000/api/students/${id}`, {
+            const response = await fetch(`http://54.155.197.147/api/students/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
