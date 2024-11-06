@@ -29,7 +29,7 @@ const Signup = () => {
 
   return (
     <div>
-      <h1>Signup</h1>
+      
       {success ? (
         <div>
           <p>Signup successful! You can now log in.</p>
@@ -37,6 +37,7 @@ const Signup = () => {
         </div>
       ) : (
         <form id = 'signup' onSubmit={handleSubmit}>
+          <h2>Signup</h2>
           <input
             type="email"
             value={email}
@@ -51,13 +52,15 @@ const Signup = () => {
             placeholder="Password"
             required
           />
-          <button type="submit">Signup</button>
+          <button id = 'signupBtn' type="submit">Signup</button>
+          <br />
+          <p>
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
           {error && <p>{error}</p>}
         </form>
       )}
-      <p>
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
+      
     </div>
   );
 };

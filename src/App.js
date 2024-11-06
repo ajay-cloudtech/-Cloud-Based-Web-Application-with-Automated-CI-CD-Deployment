@@ -4,7 +4,8 @@ import AddStudents from './Components/AddStudents';
 import StudentDash from './Components/StudentDash';
 import Login from './Components/Login';
 import Signup from './Components/Signup';
-import { AuthProvider, useAuth } from './AuthContext'; // Use the updated AuthContext
+import ForgotPassword from './Components/ForgotPassword'; // Import ForgotPassword
+import { AuthProvider, useAuth } from './AuthContext';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
                             <Route path="/" element={<Navigate to="/login" />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/signup" element={<Signup />} />
+                            <Route path="/forgot-password" element={<ForgotPassword />} />
                             <Route path="/dashboard" element={<DashboardRoute />} />
                             <Route path="*" element={<Navigate to="/login" />} />
                         </Routes>
@@ -27,23 +29,21 @@ function App() {
     );
 }
 
-// PrivateRoute checks if the user is authenticated before allowing access to a protected route
 function DashboardRoute() {
     const { currentUser, loading } = useAuth();
-  
+
     if (loading) {
         return <div>Loading...</div>;
     }
-  
-    // If user is authenticated, render the dashboard directly
+
     return currentUser ? <Dashboard /> : <Navigate to="/login" />;
-  }
+}
 
 function Dashboard() {
     return (
         <>
-            <AddStudents />
-            <StudentDash />
+            <AddStudents /> {/* Render AddStudents for toggling the form */}
+            <StudentDash /> {/* Render the Student Dashboard */}
         </>
     );
 }

@@ -18,7 +18,7 @@ html, body {
 
 #navBar{
   border: 1px solid black;
-  background: linear-gradient(rgb(96, 121, 125), rgb(34, 88, 110), rgb(14, 169, 235));
+  background: linear-gradient(rgb(58, 173, 154), rgb(169, 150, 97), rgb(216, 220, 202));
   Padding: 10px;
   display: flex;
   align-items: center;
@@ -138,22 +138,53 @@ th {
   color: white; 
 }
 
-#loginForm{
+#loginForm, #signup{
+  margin-top: 20px;
   width: 30%;
-  border: 1px solid rgb(204, 189, 189);
+  border: 1px solid #0b0b0b;
   padding: 10px 10px;
   margin-left: 10px;
   border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#loginBtn, #signupBtn, #forgotBtn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.3s;
+  margin-bottom: 10px;
+}
+
+#loginBtn:hover {
+  background-color: #45a049;
+}
+
+#forgotPasswordLink{
+  margin-top: 10px;
+  margin-left: 5px;
 }
 
 #loginPara{
   margin-left: 15px;
 }
 
-#signup{
+#forgotPasswordForm{
   width: 30%;
   border: 1px solid rgb(204, 189, 189);
   padding: 10px 10px;
   margin-left: 10px;
-  border-radius: 20px;
+  border-radius: 20px; 
+}
+
+#forgotPasswordPara{
+  margin-left: 15px;
 }

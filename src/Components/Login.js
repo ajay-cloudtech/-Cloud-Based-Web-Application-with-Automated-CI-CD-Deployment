@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const { login } = useAuth(); // No need to use setCurrentUser
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,21 +15,20 @@ const Login = () => {
     e.preventDefault();
     setError(''); 
     try {
-      await login(email, password); // Login and Firebase will manage user state
-
-      navigate('/dashboard'); // Navigate to dashboard upon successful login
+      await login(email, password);
+      navigate('/dashboard');
     } catch (error) {
-      setError(error.message); // Show error if login fails
+      setError(error.message);
     }
   };
 
   return (
     <div>
-        <nav id='navBar'>
-            <h1 id='heading1'>Grade<span style={{ color: '#e1f013' }}>Wise</span></h1>
-        </nav>
-      <h1>Login</h1>
+      <nav id='navBar'>
+          <h1 id='heading1'>Grade<span style={{ color: 'red' }}>Wise</span>📚</h1>
+      </nav>
       <form id='loginForm' onSubmit={handleSubmit}>
+        <h2>Login</h2>
         <input
           type="email"
           value={email}
@@ -44,12 +43,16 @@ const Login = () => {
           placeholder="Password"
           required
         />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p>{error}</p>}
-      <p id="loginPara">
+        <button id = 'loginBtn' type="submit">Login</button>
+        <br />
+        <Link to="/forgot-password" id="forgotPasswordLink">Forgot Password?</Link> {/* Forgot Password link */}
+        <br />
+        <p>
         Don't have an account? <Link to="/signup">Sign Up</Link>
       </p>
+      </form>
+      {error && <p>{error}</p>}
+      
     </div>
   );
 };

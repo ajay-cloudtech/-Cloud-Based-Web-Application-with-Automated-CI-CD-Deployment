@@ -6,16 +6,21 @@ function StudentDash() {
     const [editStudentId, setEditStudentId] = useState(null);  // Track the student being edited
     const [tempStudentData, setTempStudentData] = useState({}); // Store temporary student data during edit
 
-    // Example options for dropdown fields (same as your form)
+    // Example options for dropdown fields
     const courseOptions = ['Cloud Computing', 'Data Analytics', 'Machine Learning'];
     const semesterOptions = ['1', '2', '3'];
     const yearOptions = ['2024', '2025', '2026'];
     const gradeOptions = ['A', 'B', 'C', 'D', 'E'];
 
+    // Determine the base URL based on environment
+    const baseUrl = process.env.NODE_ENV === 'production'
+        ? 'http://54.155.197.147/api/students'  // Production API endpoint
+        : 'http://localhost:5000/api/students'; // Local API endpoint
+
     useEffect(() => {
         const fetchStudents = async () => {
             try {
-                const response = await fetch('http://54.155.197.147/api/students');
+                const response = await fetch(baseUrl);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -26,12 +31,12 @@ function StudentDash() {
             }
         };
         fetchStudents();
-    }, []);
+    }, [baseUrl]);
 
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this student?")) {
             try {
-                const response = await fetch(`http://54.155.197.147/api/students/${id}`, {
+                const response = await fetch(`${baseUrl}/${id}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
@@ -68,7 +73,7 @@ function StudentDash() {
     const handleUpdate = async (id, updatedStudent) => {
         const { _id, ...dataToUpdate } = updatedStudent;  // Exclude _id from the updated data
         try {
-            const response = await fetch(`http://54.155.197.147/api/students/${id}`, {
+            const response = await fetch(`${baseUrl}/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

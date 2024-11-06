@@ -1,6 +1,15 @@
 // AuthContext.js
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from 'firebase/auth';
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  setPersistence,
+  browserLocalPersistence,
+  sendPasswordResetEmail as firebaseSendPasswordResetEmail // Import and rename the function
+} from 'firebase/auth';
 import app from './firebaseConfig';
 
 const AuthContext = createContext();
@@ -14,8 +23,8 @@ export const AuthProvider = ({ children }) => {
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-          setCurrentUser(user);  
-          setLoading(false); 
+          setCurrentUser(user);
+          setLoading(false);
           
           if (user) {
             localStorage.setItem('user', JSON.stringify(user)); 
@@ -44,8 +53,13 @@ export const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
+  // Define and export the sendPasswordResetEmail function
+  const sendPasswordResetEmail = (email) => {
+    return firebaseSendPasswordResetEmail(auth, email);
+  };
+
   return (
-    <AuthContext.Provider value={{ currentUser, signup, login, logout, loading }}>
+    <AuthContext.Provider value={{ currentUser, signup, login, logout, sendPasswordResetEmail, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );
