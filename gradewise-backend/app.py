@@ -4,11 +4,13 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import os
 from dotenv import load_dotenv  # Import dotenv
+from flask_wtf.csrf import CSRFProtect
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__, static_folder='build', static_url_path='/build')
+csrf = CSRFProtect(app)
 
 # CORS setup: Allow requests from your frontend
 CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5000", "http://localhost:3000", "http://54.155.197.147"]}})
