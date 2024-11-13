@@ -1,5 +1,5 @@
 // AuthContext.js
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
 import {
   getAuth,
   onAuthStateChanged,
@@ -58,8 +58,18 @@ export const AuthProvider = ({ children }) => {
     return firebaseSendPasswordResetEmail(auth, email);
   };
 
+   // Memoize the value object to prevent unnecessary re-renders
+   const value = useMemo(() => ({
+    currentUser,
+    signup,
+    login,
+    logout,
+    sendPasswordResetEmail,
+    loading,
+  }), [currentUser, signup, login, logout, sendPasswordResetEmail, loading]);
+
   return (
-    <AuthContext.Provider value={{ currentUser, signup, login, logout, sendPasswordResetEmail, loading }}>
+    <AuthContext.Provider value={value}>
       {!loading && children}
     </AuthContext.Provider>
   );
