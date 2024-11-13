@@ -24,7 +24,7 @@ const Login = () => {
   return (
     <div>
       <nav id='navBar'>
-          <h1 id='heading1'>Grade<span style={{ color: 'red' }}>Wise</span>📚</h1>
+          <h1 id='heading1'>Grade<span style={{ color: 'rgb(68, 14, 205)' }}>Wise</span>📚</h1>
       </nav>
       <form id='loginForm' onSubmit={handleSubmit}>
         <h2>Login</h2>
