@@ -7,14 +7,41 @@ function StudentForm({ onSubmit }) {
     const [semesterName, setSemesterName] = useState('');
     const [yearNumber, setYearNumber] = useState('');
     const [grade, setGrade] = useState('');
+    const [errors, setErrors] = useState({});
 
-    // Dynamically set API URL based on the environment
-    const baseUrl = process.env.NODE_ENV === 'production'
-        ? 'http://54.155.197.147/api/students'  // Production API endpoint
-        : 'http://localhost:5000/api/students'; // Local API endpoint
+    const currentYear = new Date().getFullYear();
+    const yearOptions = Array.from({ length: currentYear - 2000 + 1 }, (_, i) => 2000 + i);
+
+    const validateForm = () => {
+        const errors = {};
+        if (!firstName.trim()) {
+            errors.firstName = "First Name is required";
+        } else if (firstName.length > 20) {
+            errors.firstName = "First Name cannot exceed 20 characters";
+        } else if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+            errors.firstName = "First Name can only contain letters";
+        }
+
+        if (!lastName.trim()) {
+            errors.lastName = "Last Name is required";
+        } else if (lastName.length > 20) {
+            errors.lastName = "Last Name cannot exceed 20 characters";
+        } else if (!/^[a-zA-Z\s]+$/.test(lastName)) {
+            errors.lastName = "Last Name can only contain letters";
+        }
+
+        if (!courseName) errors.courseName = "Please select a course";
+        if (!semesterName) errors.semesterName = "Please select a semester";
+        if (!yearNumber) errors.yearNumber = "Please select a year";
+        if (!grade) errors.grade = "Please select a grade";
+
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validateForm()) return;
 
         const studentData = {
             firstName,
@@ -26,7 +53,7 @@ function StudentForm({ onSubmit }) {
         };
 
         try {
-            const response = await fetch(baseUrl, {
+            const response = await fetch('http://localhost:5000/api/students', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,6 +70,7 @@ function StudentForm({ onSubmit }) {
                 setSemesterName('');
                 setYearNumber('');
                 setGrade('');
+                setErrors({});
                 alert('Student added successfully!');
             } else {
                 alert('Failed to add student.');
@@ -61,9 +89,11 @@ function StudentForm({ onSubmit }) {
                     id='firstName'
                     type='text'
                     value={firstName}
+                    maxLength="20"
                     onChange={(e) => setFirstName(e.target.value)}
                     required
                 />
+                {errors.firstName && <span className="error">{errors.firstName}</span>}
             </div>
 
             <div id='lastNameDiv'>
@@ -72,9 +102,11 @@ function StudentForm({ onSubmit }) {
                     id='lastName'
                     type='text'
                     value={lastName}
+                    maxLength="20"
                     onChange={(e) => setLastName(e.target.value)}
                     required
                 />
+                {errors.lastName && <span className="error">{errors.lastName}</span>}
             </div>
 
             <div id='courseNameDiv'>
@@ -90,6 +122,7 @@ function StudentForm({ onSubmit }) {
                     <option value='Data Analytics'>Data Analytics</option>
                     <option value='Machine Learning'>Machine Learning</option>
                 </select>
+                {errors.courseName && <span className="error">{errors.courseName}</span>}
             </div>
 
             <div id='semesterNameDiv'>
@@ -105,6 +138,7 @@ function StudentForm({ onSubmit }) {
                     <option value='2'>2</option>
                     <option value='3'>3</option>
                 </select>
+                {errors.semesterName && <span className="error">{errors.semesterName}</span>}
             </div>
 
             <div id='yearNumberDiv'>
@@ -116,10 +150,13 @@ function StudentForm({ onSubmit }) {
                     required
                 >
                     <option value=''>Select year</option>
-                    <option value='2024'>2024</option>
-                    <option value='2025'>2025</option>
-                    <option value='2026'>2026</option>
+                    {yearOptions.map((year) => (
+                        <option key={year} value={year}>
+                            {year}
+                        </option>
+                    ))}
                 </select>
+                {errors.yearNumber && <span className="error">{errors.yearNumber}</span>}
             </div>
 
             <div id='gradeDiv'>
@@ -137,6 +174,7 @@ function StudentForm({ onSubmit }) {
                     <option value='D'>D</option>
                     <option value='E'>E</option>
                 </select>
+                {errors.grade && <span className="error">{errors.grade}</span>}
             </div>
 
             <div id='submitBtnDiv'>
