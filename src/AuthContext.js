@@ -1,5 +1,5 @@
 // AuthContext.js
-import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import {
   getAuth,
   onAuthStateChanged,
@@ -40,26 +40,27 @@ export const AuthProvider = ({ children }) => {
       });
   }, [auth]);
 
-  const signup = (email, password) => {
+  // Use useCallback to memoize functions
+  const signup = useCallback((email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
-  };
+  }, [auth]);
 
-  const login = (email, password) => {
+  const login = useCallback((email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
-  };
+  }, [auth]);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem('user');
     return signOut(auth);
-  };
+  }, [auth]);
 
-  // Define and export the sendPasswordResetEmail function
-  const sendPasswordResetEmail = (email) => {
+  // Memoize the sendPasswordResetEmail function
+  const sendPasswordResetEmail = useCallback((email) => {
     return firebaseSendPasswordResetEmail(auth, email);
-  };
+  }, [auth]);
 
-   // Memoize the value object to prevent unnecessary re-renders
-   const value = useMemo(() => ({
+  // Memoize the value object to prevent unnecessary re-renders
+  const value = useMemo(() => ({
     currentUser,
     signup,
     login,
