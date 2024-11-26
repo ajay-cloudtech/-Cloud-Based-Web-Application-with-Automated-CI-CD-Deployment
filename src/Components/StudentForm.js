@@ -39,6 +39,10 @@ function StudentForm({ onSubmit }) {
         return Object.keys(errors).length === 0;
     };
 
+    const baseUrl = process.env.NODE_ENV === 'production'
+        ? 'http://54.155.197.147/api/students'
+        : 'http://localhost:5000/api/students';
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
@@ -53,7 +57,7 @@ function StudentForm({ onSubmit }) {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/students', {
+            const response = await fetch(baseUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -4,12 +4,14 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import os
 from dotenv import load_dotenv  # Import dotenv
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, generate_csrf
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__, static_folder='build', static_url_path='/build')
+
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 csrf = CSRFProtect(app)
 
 # CORS setup: Allow requests from your frontend
@@ -34,6 +36,7 @@ def add_student():
     
     mongo.db.grades.insert_one(data)
     return jsonify({'message': 'Student added successfully'}), 201
+csrf.exempt(add_student)
 
 @app.route('/api/students', methods=['GET'])
 def get_students():  # Changed function name to plural for consistency
@@ -56,6 +59,7 @@ def delete_student(id):
         return jsonify({"message": "Student deleted successfully"}), 200
     
     return jsonify({"error": "Student not found"}), 404
+csrf.exempt(delete_student)
 
 @app.route('/api/students/<id>', methods=['PUT'])
 def update_student(id):
@@ -79,6 +83,19 @@ def update_student(id):
         return jsonify({"message": "Student updated successfully"}), 200
     
     return jsonify({"error": "Student not found or no changes made"}), 404
+csrf.exempt(update_student)
+
+@app.route('/api/students/counts', methods=['GET'])
+def get_student_counts():
+    # Get the counts of students who passed and failed based on grade
+    passed_count = mongo.db.grades.count_documents({'grade': {'$in': ['A', 'B', 'C']}})
+    failed_count = mongo.db.grades.count_documents({'grade': {'$in': ['D', 'E']}})
+    
+    # Return the counts as a JSON response
+    return jsonify({
+        'students_doing_great': passed_count,
+        'students_can_do_better': failed_count
+    }), 200
 
 # Serve static files
 @app.route('/build/<path:path>')

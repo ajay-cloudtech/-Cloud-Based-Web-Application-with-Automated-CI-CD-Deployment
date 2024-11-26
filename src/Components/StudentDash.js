@@ -1,23 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import GradeCategories from './GradeCategories';
 
 function StudentDash() {
     const [students, setStudents] = useState([]);
-    const [editStudentId, setEditStudentId] = useState(null);  // Track the student being edited
-    const [tempStudentData, setTempStudentData] = useState({}); // Store temporary student data during edit
+    const [counts, setCounts] = useState({ students_doing_great: 0, students_can_do_better: 0 });
+    const [editStudentId, setEditStudentId] = useState(null);
+    const [tempStudentData, setTempStudentData] = useState({});
 
-    // Example options for dropdown fields
     const courseOptions = ['Cloud Computing', 'Data Analytics', 'Machine Learning'];
     const semesterOptions = ['1', '2', '3'];
     const yearOptions = ['2024', '2025', '2026'];
     const gradeOptions = ['A', 'B', 'C', 'D', 'E'];
 
-    // Determine the base URL based on environment
     const baseUrl = process.env.NODE_ENV === 'production'
-        ? 'http://54.155.197.147/api/students'  // Production API endpoint
-        : 'http://localhost:5000/api/students'; // Local API endpoint
+        ? 'http://54.155.197.147/api/students'
+        : 'http://localhost:5000/api/students';
 
+    // Fetch counts of students and list of students
     useEffect(() => {
+        const fetchStudentCounts = async () => {
+            try {
+                const response = await fetch(`${baseUrl}/counts`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setCounts(data); // Set the counts of passed/failed students
+            } catch (error) {
+                console.error('Error fetching student counts:', error);
+            }
+        };
+
         const fetchStudents = async () => {
             try {
                 const response = await fetch(baseUrl);
@@ -30,6 +44,9 @@ function StudentDash() {
                 console.error('Error fetching students:', error);
             }
         };
+
+        // Fetch both counts and student data
+        fetchStudentCounts();
         fetchStudents();
     }, [baseUrl]);
 
@@ -41,7 +58,7 @@ function StudentDash() {
                 });
                 if (response.ok) {
                     alert('Student deleted successfully!');
-                    setStudents(students.filter(student => student._id !== id)); // Update local state
+                    setStudents(students.filter(student => student._id !== id));
                 } else {
                     alert('Failed to delete student.');
                 }
@@ -54,7 +71,7 @@ function StudentDash() {
 
     const handleEditClick = (student) => {
         setEditStudentId(student._id);
-        setTempStudentData(student);  // Initialize temp data with the current student's details
+        setTempStudentData(student);
     };
 
     const handleInputChange = (e) => {
@@ -67,18 +84,18 @@ function StudentDash() {
 
     const handleSave = (id) => {
         handleUpdate(id, tempStudentData);
-        setEditStudentId(null);  // Exit edit mode
+        setEditStudentId(null);
     };
 
     const handleUpdate = async (id, updatedStudent) => {
-        const { _id, ...dataToUpdate } = updatedStudent;  // Exclude _id from the updated data
+        const { _id, ...dataToUpdate } = updatedStudent;
         try {
             const response = await fetch(`${baseUrl}/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(dataToUpdate),  // Pass dataToUpdate, not updatedStudent
+                body: JSON.stringify(dataToUpdate),
             });
             
             if (!response.ok) {
@@ -95,6 +112,9 @@ function StudentDash() {
 
     return (
         <div id='dashboard'>
+            {/* Render the GradeCategories component here, passing the counts data */}
+            <GradeCategories counts={counts} />
+
             <table>
                 <thead>
                     <tr>
@@ -110,102 +130,90 @@ function StudentDash() {
                 <tbody>
                     {students.map(student => (
                         <tr key={student._id}>
-                            <td>
-                                {editStudentId === student._id ? (
-                                    <input
-                                        type="text"
-                                        name="firstName"
-                                        value={tempStudentData.firstName}
-                                        onChange={handleInputChange}
-                                    />
-                                ) : (
-                                    student.firstName
-                                )}
-                            </td>
-                            <td>
-                                {editStudentId === student._id ? (
-                                    <input
-                                        type="text"
-                                        name="lastName"
-                                        value={tempStudentData.lastName}
-                                        onChange={handleInputChange}
-                                    />
-                                ) : (
-                                    student.lastName
-                                )}
-                            </td>
-                            <td>
-                                {editStudentId === student._id ? (
-                                    <select
-                                        name="courseName"
-                                        value={tempStudentData.courseName}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="">Select a course</option>
-                                        {courseOptions.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                ) : (
-                                    student.courseName
-                                )}
-                            </td>
-                            <td>
-                                {editStudentId === student._id ? (
-                                    <select
-                                        name="semesterName"
-                                        value={tempStudentData.semesterName}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="">Select semester</option>
-                                        {semesterOptions.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                ) : (
-                                    student.semesterName
-                                )}
-                            </td>
-                            <td>
-                                {editStudentId === student._id ? (
-                                    <select
-                                        name="yearNumber"
-                                        value={tempStudentData.yearNumber}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="">Select year</option>
-                                        {yearOptions.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                ) : (
-                                    student.yearNumber
-                                )}
-                            </td>
-                            <td>
-                                {editStudentId === student._id ? (
-                                    <select
-                                        name="grade"
-                                        value={tempStudentData.grade}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="">Select grade</option>
-                                        {gradeOptions.map((option) => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                ) : (
-                                    student.grade
-                                )}
-                            </td>
+                            <td>{editStudentId === student._id ? (
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    value={tempStudentData.firstName}
+                                    onChange={handleInputChange}
+                                />
+                            ) : (
+                                student.firstName
+                            )}</td>
+                            <td>{editStudentId === student._id ? (
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    value={tempStudentData.lastName}
+                                    onChange={handleInputChange}
+                                />
+                            ) : (
+                                student.lastName
+                            )}</td>
+                            <td>{editStudentId === student._id ? (
+                                <select
+                                    name="courseName"
+                                    value={tempStudentData.courseName}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="">Select a course</option>
+                                    {courseOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                student.courseName
+                            )}</td>
+                            <td>{editStudentId === student._id ? (
+                                <select
+                                    name="semesterName"
+                                    value={tempStudentData.semesterName}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="">Select semester</option>
+                                    {semesterOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                student.semesterName
+                            )}</td>
+                            <td>{editStudentId === student._id ? (
+                                <select
+                                    name="yearNumber"
+                                    value={tempStudentData.yearNumber}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="">Select year</option>
+                                    {yearOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                student.yearNumber
+                            )}</td>
+                            <td>{editStudentId === student._id ? (
+                                <select
+                                    name="grade"
+                                    value={tempStudentData.grade}
+                                    onChange={handleInputChange}
+                                >
+                                    <option value="">Select grade</option>
+                                    {gradeOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                student.grade
+                            )}</td>
                             <td>
                                 {editStudentId === student._id ? (
                                     <>
