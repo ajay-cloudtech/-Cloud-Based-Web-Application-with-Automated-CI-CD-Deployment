@@ -40,7 +40,7 @@ function StudentForm({ onSubmit }) {
     };
 
     const baseUrl = process.env.NODE_ENV === 'production'
-        ? 'http://34.244.250.20/api/students'
+        ? 'https://gradewise-app.zapto.org/api/students'
         : 'http://localhost:5000/api/students';
 
     const handleSubmit = async (e) => {
