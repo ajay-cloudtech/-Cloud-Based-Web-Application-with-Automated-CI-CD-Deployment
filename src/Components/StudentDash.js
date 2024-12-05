@@ -217,8 +217,8 @@ function StudentDash() {
                             <td>
                                 {editStudentId === student._id ? (
                                     <>
-                                        <button onClick={() => handleSave(student._id)}>Save</button>
-                                        <button onClick={() => setEditStudentId(null)}>Cancel</button>
+                                        <button onClick={() => handleSave(student._id)}>✔️</button>
+                                        <button onClick={() => setEditStudentId(null)}>❌</button>
                                     </>
                                 ) : (
                                     <>

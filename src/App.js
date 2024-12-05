@@ -23,6 +23,7 @@ function App() {
                             <Route path="*" element={<Navigate to="/login" />} />
                         </Routes>
                     </main>
+                    <Footer />
                 </div>
             </Router>
         </AuthProvider>
@@ -45,6 +46,14 @@ function Dashboard() {
             <AddStudents /> {/* Render AddStudents for toggling the form */}
             <StudentDash /> {/* Render the Student Dashboard */}
         </>
+    );
+}
+
+function Footer() {
+    return (
+        <footer id="footer">
+            <p>© {new Date().getFullYear()} GradeWise. All rights reserved.</p>
+        </footer>
     );
 }
 

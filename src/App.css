@@ -18,7 +18,7 @@ html, body {
 
 #navBar{
   border: 1px solid black;
-  background: linear-gradient(rgb(58, 173, 154), rgb(169, 150, 97), rgb(216, 220, 202));
+  background: linear-gradient(rgb(82, 137, 127), rgb(82, 217, 222), rgb(16, 117, 117));
   Padding: 10px;
   display: flex;
   align-items: center;
@@ -29,22 +29,6 @@ html, body {
   margin: 0; /* Remove default margin from heading */
   font-size: 50px; /* Keep your existing font size */
   color: rgb(21, 23, 21);
-}
-
-#navBar button {
-  background-color: white; 
-  color: #130f0e; 
-  font-weight: bold;
-  border: 1px solid #090200; 
-  border-radius: 5px; 
-  padding: 8px 16px; 
-  cursor: pointer; 
-  margin-left: 20px;
-}
-
-#navBar button:hover {
-  background-color: #78b923; 
-  color: white; 
 }
 
 #studentForm{
@@ -93,10 +77,9 @@ input {
 }
 
 #dashboard{
-  border: 1px solid black;
   margin: 2.5% 10%;
-  width: 80%;
-  
+  width: 85%;
+  margin-left: 7%;
 }
 
 table {
@@ -111,31 +94,28 @@ th, td {
 }
 
 th {
-  background-color: #f2f2f2;
-}
-
-#editBtn{
-  margin-right: 10px;
+  background-color: #cac0c0;
+  color: rgb(5, 5, 5);
 }
 
 #editBtn, #delBtn{
-  background-color: white; 
-  color: #130f0e; 
+  margin-right: 10px;
+  border: none;
+  color: #070707; 
   font-weight: bold;
-  border: 1px solid #090200; 
-  border-radius: 5px; 
-  padding: 8px 8px; 
   cursor: pointer; 
 }
 
 #editBtn:hover {
-  background-color: #dcd10f; 
+  background-color: #35ca3f; 
   color: white; 
+  border: none;
 }
 
 #delBtn:hover{
   background-color: #ec2812; 
   color: white; 
+  border: none;
 }
 
 #loginForm, #signup{
@@ -190,6 +170,7 @@ th {
 }
 
 #gradeCategories{
+  padding: 10px;
   display: flex;
   justify-content: space-evenly;
 }
@@ -204,10 +185,67 @@ th {
   background-color: #bddc94;
 }
 
+#pass:hover{
+  background-color: #7a9e40;
+}
+
+
 #fail{
   background-color: #dc9494;
 }
 
+#fail:hover{
+  background-color: #e14a4a;
+}
+
 #passper{
   background-color: #94c3dc;
+}
+
+#passper:hover{
+  background-color: #258cc4;
+}
+
+#addbtn, #logBtn {
+  background-color: rgb(240, 240, 244); 
+  color: #0a0909; 
+  font-weight: bold;
+  font-size: medium;
+  border: 1px solid #090200; 
+  border-radius: 5px; 
+  padding: 8px 16px; 
+  cursor: pointer; 
+  margin-left: 20px;
+}
+
+#addbtn:hover, #logBtn:hover {
+  background-color: rgb(227, 227, 228);
+  color: #0a0909; 
+}
+
+#cancelbtn {
+  background-color: rgb(225, 37, 68); 
+  color: #fcfbfb; 
+  font-weight: bold;
+  font-size: medium;
+  border: 1px solid #090200; 
+  border-radius: 5px; 
+  padding: 8px 16px; 
+  cursor: pointer; 
+  margin-left: 20px;
+}
+
+#cancelbtn:hover {
+  background-color: darkred;
+  color: white;
+}
+
+#footer {
+  background-color: #333; /* Dark background color */
+  color: white; /* Text color */
+  text-align: center; /* Center the text */
+  padding: 10px 0; /* Padding for spacing */
+  position: fixed; /* Stick the footer to the bottom */
+  width: 100%; /* Full width */
+  bottom: 0; /* Position at the bottom */
 }
