@@ -17,7 +17,7 @@ function NavBar({ toggleForm, buttonLabel }) {
 
     return (
         <nav id='navBar'>
-            <h1 id='heading1'>Grade<span style={{ color: 'black' }}>Wise</span>📚</h1>
+            <h1 id='heading1'>Grade<span style={{ color: 'red' }}>Wise</span>📚</h1>
             <button id={buttonLabel === 'Cancel' ? 'cancelbtn' : 'addbtn'}  onClick={toggleForm}>{buttonLabel}</button>
             <div id = 'authBtn'>
                 {currentUser ? ( // Conditional rendering based on authentication state
