@@ -1,39 +1,39 @@
-// Signup.js
 import React, { useState } from 'react';
 import { useAuth } from '../AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
+//function for signup
 const Signup = () => {
-  const { signup } = useAuth();
+  const { signup } = useAuth(); //hook to handle auth
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false); 
   const navigate = useNavigate(); 
 
+  // handler function for signup form submisison
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Clear previous errors
+    setError(''); 
     try {
       await signup(email, password);
-      setSuccess(true); // Set success to true on successful signup
-      // Optionally navigate to login after a short delay
+      setSuccess(true); 
       setTimeout(() => {
-        navigate('/login'); // Redirect to login page after successful signup
-      }, 3000); // Wait for 3 seconds before redirecting
+        navigate('/login'); // redirect to login page after successful signup
+      }, 3000); 
     } catch (error) {
       setError(error.message);
-      setSuccess(false); // Reset success state on error
+      setSuccess(false); 
     }
   };
 
   return (
+    //html component for signup form
     <div>
-      
       {success ? (
         <div>
           <p>Signup successful! You can now log in.</p>
-          <Link to="/login">Go to Login</Link> {/* Link to navigate to login */}
+          <Link to="/login">Go to Login</Link> 
         </div>
       ) : (
         <form id = 'signup' onSubmit={handleSubmit}>

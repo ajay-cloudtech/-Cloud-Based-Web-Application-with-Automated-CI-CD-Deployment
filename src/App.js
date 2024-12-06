@@ -4,22 +4,29 @@ import AddStudents from './Components/AddStudents';
 import StudentDash from './Components/StudentDash';
 import Login from './Components/Login';
 import Signup from './Components/Signup';
-import ForgotPassword from './Components/ForgotPassword'; // Import ForgotPassword
+import ForgotPassword from './Components/ForgotPassword'; 
 import { AuthProvider, useAuth } from './AuthContext';
 import './App.css';
 
 function App() {
     return (
-        <AuthProvider>
+        <AuthProvider> {/* Wrapping with AuthProvider for authentication context */}
             <Router>
                 <div>
                     <main>
                         <Routes>
+                            {/* redirect to the login page by default */}
                             <Route path="/" element={<Navigate to="/login" />} />
+
+                             {/* Auth routes */}
                             <Route path="/login" element={<Login />} />
                             <Route path="/signup" element={<Signup />} />
                             <Route path="/forgot-password" element={<ForgotPassword />} />
+
+                            {/* dashboard route */}
                             <Route path="/dashboard" element={<DashboardRoute />} />
+
+                            {/* redirect any other paths to login */}
                             <Route path="*" element={<Navigate to="/login" />} />
                         </Routes>
                     </main>
@@ -30,25 +37,26 @@ function App() {
     );
 }
 
+// function to redirect to dashboard page if user is logged in
 function DashboardRoute() {
     const { currentUser, loading } = useAuth();
-
     if (loading) {
         return <div>Loading...</div>;
     }
-
     return currentUser ? <Dashboard /> : <Navigate to="/login" />;
 }
 
+// function to display the dashboard as well as add student form 
 function Dashboard() {
     return (
         <>
-            <AddStudents /> {/* Render AddStudents for toggling the form */}
-            <StudentDash /> {/* Render the Student Dashboard */}
+            <AddStudents /> 
+            <StudentDash /> 
         </>
     );
 }
 
+// function for footer
 function Footer() {
     return (
         <footer id="footer">

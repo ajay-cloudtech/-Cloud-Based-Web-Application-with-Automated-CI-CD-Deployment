@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import NavBar from './NavBar';
 import StudentForm from './StudentForm';
 
+// function to manage form visibility as well as add and cancel buttons on Nav bar
 function AddStudents() {
-    const [isFormVisible, setIsFormVisible] = useState(false); // Track form visibility
+    const [isFormVisible, setIsFormVisible] = useState(false); 
 
     function toggleForm() {
-        setIsFormVisible(prevState => !prevState); // Toggle form visibility
+        setIsFormVisible(prevState => !prevState); // toggle form visibility
     }
 
     function hideForm() {

@@ -1,4 +1,3 @@
-// AuthContext.js
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import {
   getAuth,
@@ -12,6 +11,7 @@ import {
 } from 'firebase/auth';
 import app from './firebaseConfig';
 
+// create context for authentication state
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -20,12 +20,14 @@ export const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
 
   useEffect(() => {
+    // set the persistence on local storage in browser
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
+        //subscribe to changes in auth state
         const unsubscribe = onAuthStateChanged(auth, (user) => {
           setCurrentUser(user);
           setLoading(false);
-          
+          //save user in local storage
           if (user) {
             localStorage.setItem('user', JSON.stringify(user)); 
           } else {
@@ -40,26 +42,28 @@ export const AuthProvider = ({ children }) => {
       });
   }, [auth]);
 
-  // Use useCallback to memoize functions
+  // function to signup 
   const signup = useCallback((email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   }, [auth]);
 
+  // function to login
   const login = useCallback((email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   }, [auth]);
 
+  // function to log out
   const logout = useCallback(() => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('user'); // clear local storage
     return signOut(auth);
   }, [auth]);
 
-  // Memoize the sendPasswordResetEmail function
+  // function to send password reset email
   const sendPasswordResetEmail = useCallback((email) => {
     return firebaseSendPasswordResetEmail(auth, email);
   }, [auth]);
 
-  // Memoize the value object to prevent unnecessary re-renders
+  // store the value object to avoid unwanted re renders.
   const value = useMemo(() => ({
     currentUser,
     signup,
@@ -76,6 +80,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// hook for auth context
 export const useAuth = () => {
   return useContext(AuthContext);
 };

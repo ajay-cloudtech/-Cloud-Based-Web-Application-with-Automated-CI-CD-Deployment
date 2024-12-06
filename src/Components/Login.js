@@ -3,25 +3,28 @@ import React, { useState } from 'react';
 import { useAuth } from '../AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 
+// function for login
 const Login = () => {
-  const { login } = useAuth();
+  const { login } = useAuth(); // hook to handle auth
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate(); 
 
+  //handler function for login form submisison
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); 
     try {
       await login(email, password);
-      navigate('/dashboard');
+      navigate('/dashboard'); // redirect to dashboard page on successful login
     } catch (error) {
       setError(error.message);
     }
   };
 
   return (
+    //html component for login form
     <div>
       <nav id='navBar'>
           <h1 id='heading1'>Grade<span style={{color: 'red'}}>Wise</span>📚</h1>

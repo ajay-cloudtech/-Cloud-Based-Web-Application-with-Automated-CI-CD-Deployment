@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// function for student form
 function StudentForm({ onSubmit }) {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -10,8 +11,9 @@ function StudentForm({ onSubmit }) {
     const [errors, setErrors] = useState({});
 
     const currentYear = new Date().getFullYear();
-    const yearOptions = Array.from({ length: currentYear - 2000 + 1 }, (_, i) => 2000 + i);
+    const yearOptions = Array.from({ length: currentYear - 2020 + 1 }, (_, i) => 2020 + i);
 
+    // function for form validation with relevant error messages
     const validateForm = () => {
         const errors = {};
         if (!firstName.trim()) {
@@ -38,11 +40,12 @@ function StudentForm({ onSubmit }) {
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
-
+     // api URL setup based on environment
     const baseUrl = process.env.NODE_ENV === 'production'
         ? 'https://gradewise-app.zapto.org/api/students'
         : 'http://localhost:5000/api/students';
-
+    
+    // handler for form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
@@ -55,7 +58,7 @@ function StudentForm({ onSubmit }) {
             yearNumber,
             grade
         };
-
+        
         try {
             const response = await fetch(baseUrl, {
                 method: 'POST',
@@ -66,7 +69,7 @@ function StudentForm({ onSubmit }) {
             });
 
             if (response.ok) {
-                onSubmit();
+                onSubmit(); 
                 window.location.reload();
                 setFirstName('');
                 setLastName('');

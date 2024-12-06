@@ -2,22 +2,25 @@ import React, { useEffect, useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import GradeCategories from './GradeCategories';
 
+// function for student dashboard
 function StudentDash() {
-    const [students, setStudents] = useState([]);
-    const [counts, setCounts] = useState({ students_doing_great: 0, students_can_do_better: 0 });
+    const [students, setStudents] = useState([]); // students list
+    const [counts, setCounts] = useState({ students_doing_great: 0, students_can_do_better: 0 }); // students count
     const [editStudentId, setEditStudentId] = useState(null);
     const [tempStudentData, setTempStudentData] = useState({});
 
+    // dropdown fields
     const courseOptions = ['Cloud Computing', 'Data Analytics', 'Machine Learning'];
     const semesterOptions = ['1', '2', '3'];
-    const yearOptions = ['2024', '2025', '2026'];
+    const yearOptions = ['2020', '2021', '2022','2023', '2024'];
     const gradeOptions = ['A', 'B', 'C', 'D', 'E'];
 
+    // API url selection based on environment
     const baseUrl = process.env.NODE_ENV === 'production'
         ? 'https://gradewise-app.zapto.org/api/students'
         : 'http://localhost:5000/api/students';
 
-    // Fetch counts of students and list of students
+    // fetch counts of students and list of students
     useEffect(() => {
         const fetchStudentCounts = async () => {
             try {
@@ -26,7 +29,7 @@ function StudentDash() {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                setCounts(data); // Set the counts of passed/failed students
+                setCounts(data); // set the counts of passed and failed students
             } catch (error) {
                 console.error('Error fetching student counts:', error);
             }
@@ -45,11 +48,12 @@ function StudentDash() {
             }
         };
 
-        // Fetch both counts and student data
+        // fetch both counts and student data
         fetchStudentCounts();
         fetchStudents();
     }, [baseUrl]);
 
+    // handler for deleting a student
     const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this student?")) {
             try {
@@ -57,6 +61,7 @@ function StudentDash() {
                     method: 'DELETE',
                 });
                 if (response.ok) {
+                    window.location.reload();
                     alert('Student deleted successfully!');
                     setStudents(students.filter(student => student._id !== id));
                 } else {
@@ -69,11 +74,12 @@ function StudentDash() {
         }
     };
 
+    // handler for updating student details
     const handleEditClick = (student) => {
         setEditStudentId(student._id);
         setTempStudentData(student);
     };
-
+    // handle changes to input fields during edit
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setTempStudentData(prevData => ({
@@ -81,12 +87,12 @@ function StudentDash() {
             [name]: value
         }));
     };
-
+     // save the updated student data
     const handleSave = (id) => {
         handleUpdate(id, tempStudentData);
         setEditStudentId(null);
     };
-
+    //update student data in backend
     const handleUpdate = async (id, updatedStudent) => {
         const { _id, ...dataToUpdate } = updatedStudent;
         try {
@@ -103,6 +109,7 @@ function StudentDash() {
                 throw new Error(errorData.error || 'Failed to update student.');
             }
             alert('Student updated successfully!');
+            window.location.reload();
             setStudents(students.map(student => student._id === id ? { ...student, ...dataToUpdate } : student));
         } catch (error) {
             console.error('Error updating student:', error);
@@ -111,8 +118,9 @@ function StudentDash() {
     };
 
     return (
+        // html for dashboard component
         <div id='dashboard'>
-            {/* Render the GradeCategories component here, passing the counts data */}
+            {/* render the GradeCategories component*/}
             <GradeCategories counts={counts} />
 
             <table>

@@ -1,5 +1,6 @@
 import React from 'react';
 
+// function for grade analysis that returns its html component
 function GradeCategories({ counts }) {
     return (
         <div id="gradeCategories">
