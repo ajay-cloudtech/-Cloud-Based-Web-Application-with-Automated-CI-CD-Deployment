@@ -27,7 +27,7 @@ const Login = () => {
     //html component for login form
     <div>
       <nav id='navBar'>
-          <h1 id='heading1'>Grade<span style={{color: 'red'}}>Wise</span>📚</h1>
+          <h1 id='heading1'>GradeWise📚</h1>
       </nav>
       <form id='loginForm' onSubmit={handleSubmit}>
         <h2>Login</h2>

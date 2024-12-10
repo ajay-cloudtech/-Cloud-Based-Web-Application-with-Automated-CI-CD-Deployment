@@ -27,7 +27,10 @@ const ForgotPassword = () => {
   return (
      //html component for reset password form
     <div>
-      <h1>Forgot Password</h1>
+       <nav id='navBar'>
+          <h1 id='heading1'>GradeWise📚</h1>
+      </nav>
+      <h1>&nbsp;&nbsp;&nbsp;Forgot Password</h1>
       <form id = 'forgotPasswordForm' onSubmit={handleSubmit}>
         <p style={{color: 'red', fontSize: '12px'}}> Enter a valid email address to receive password reset link in your inbox</p>
         <input

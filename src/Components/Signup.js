@@ -30,6 +30,9 @@ const Signup = () => {
   return (
     //html component for signup form
     <div>
+       <nav id='navBar'>
+          <h1 id='heading1'>GradeWise📚</h1>
+      </nav>
       {success ? (
         <div>
           <p>Signup successful! You can now log in.</p>
