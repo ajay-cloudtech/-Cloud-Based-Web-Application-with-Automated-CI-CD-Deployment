@@ -78,7 +78,6 @@ function StudentForm({ onSubmit }) {
                 setYearNumber('');
                 setGrade('');
                 setErrors({});
-                alert('Student added successfully!');
             } else {
                 alert('Failed to add student.');
             }

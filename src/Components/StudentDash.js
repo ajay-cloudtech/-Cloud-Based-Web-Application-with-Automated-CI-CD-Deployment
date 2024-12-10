@@ -62,7 +62,6 @@ function StudentDash() {
                 });
                 if (response.ok) {
                     window.location.reload();
-                    alert('Student deleted successfully!');
                     setStudents(students.filter(student => student._id !== id));
                 } else {
                     alert('Failed to delete student.');
@@ -108,7 +107,6 @@ function StudentDash() {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Failed to update student.');
             }
-            alert('Student updated successfully!');
             window.location.reload();
             setStudents(students.map(student => student._id === id ? { ...student, ...dataToUpdate } : student));
         } catch (error) {
