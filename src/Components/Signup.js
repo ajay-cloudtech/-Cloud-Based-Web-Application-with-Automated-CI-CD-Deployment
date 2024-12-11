@@ -7,14 +7,23 @@ const Signup = () => {
   const { signup } = useAuth(); //hook to handle auth
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [accessCode, setAccessCode] = useState(''); // new state for access code
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false); 
   const navigate = useNavigate(); 
 
-  // handler function for signup form submisison
+  const VALID_ACCESS_CODE = 'TrustedFaculty2024'; // predefined valid access code
+
+  // handler function for signup form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(''); 
+
+    if (accessCode !== VALID_ACCESS_CODE) { // validate access code
+      setError('Invalid access code');
+      return;
+    }
+
     try {
       await signup(email, password);
       setSuccess(true); 
@@ -39,7 +48,7 @@ const Signup = () => {
           <Link to="/login">Go to Login</Link> 
         </div>
       ) : (
-        <form id = 'signup' onSubmit={handleSubmit}>
+        <form id='signup' onSubmit={handleSubmit}>
           <h2>Signup</h2>
           <input
             type="email"
@@ -55,7 +64,14 @@ const Signup = () => {
             placeholder="Password"
             required
           />
-          <button id = 'signupBtn' type="submit">Signup</button>
+          <input
+            type="password"
+            value={accessCode}
+            onChange={(e) => setAccessCode(e.target.value)}
+            placeholder="Access Code"
+            required
+          />
+          <button id='signupBtn' type="submit">Signup</button>
           <br />
           <p>
             Already have an account? <Link to="/login">Login</Link>
