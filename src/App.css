@@ -221,30 +221,6 @@ th {
   padding: 10px;
 }
 
-#pass{
-  background-color: #bddc94;
-}
-
-#pass:hover{
-  background-color: #7a9e40;
-}
-
-#fail{
-  background-color: #dc9494;
-}
-
-#fail:hover{
-  background-color: #e14a4a;
-}
-
-#passper{
-  background-color: #94c3dc;
-}
-
-#passper:hover{
-  background-color: #258cc4;
-}
-
 /* css for footer */
 #footer {
   background-color: #333; 
