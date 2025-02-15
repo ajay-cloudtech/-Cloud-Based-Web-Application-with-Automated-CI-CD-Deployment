@@ -49,3 +49,19 @@ Migrate to AWS Cognito for authentication for better security.
 Implement AWS CodeDeploy for streamlined CI/CD instead of Jenkins.
 Introduce automated testing in the pipeline to catch issues earlier.
 Optimize API security further by enforcing strict CORS policies and API gateway integration.
+
+Sonarqube configuration in pipeline
+![image](https://github.com/user-attachments/assets/28d47892-560c-4041-98f6-c8651746a39f)
+
+Deploying app to prod in pipeline
+![image](https://github.com/user-attachments/assets/59fffc39-ca7f-41ab-83ca-84990dcba64c)
+
+Quality check pass in Jenkins
+![image](https://github.com/user-attachments/assets/fd8fc8b5-3850-4654-a81d-73bd5f481dc9)
+
+SQ tool analysis
+![image](https://github.com/user-attachments/assets/f0119b72-0453-4a3c-b550-0e640e4d8e90)
+
+
+
+
