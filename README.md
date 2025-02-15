@@ -1,70 +1,51 @@
-# Getting Started with Create React App
+# Cloud-Based Web Application with CI/CD
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Architecture Design
+![image](https://github.com/user-attachments/assets/e55bb20a-0fb8-481b-a539-7b87922ddeaa)
 
-## Available Scripts
+## CICD Pipeline
+![image](https://github.com/user-attachments/assets/d4d80c7c-00e7-4868-9407-14a1f971de9d)
 
-In the project directory, you can run:
 
-### `npm start`
+## Project Overview
+This project is a cloud-native web application deployed on AWS EC2, designed with a fully automated CI/CD pipeline using Jenkins. The pipeline integrates SonarQube for static code analysis, automated builds, and seamless deployments, ensuring high code quality and security.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Tech Stack
+* Frontend: React (JavaScript), HTML, CSS
+* Backend: Flask (Python)
+* Database: MongoDB Atlas (NoSQL)
+* Authentication: Firebase Authentication
+* CI/CD: Jenkins, GitHub Webhooks
+* Code Quality & Security: SonarQube
+* Server & Deployment: AWS EC2, Gunicorn, Nginx
+* Networking & Security: HTTPS (Certbot SSL), CSRF protection, CORS policies
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## CI/CD Workflow
+* Code Push to GitHub → Triggers Jenkins
+* Jenkins Pipeline begins execution
+* Fetch latest code
+* Run SonarQube static analysis
+* Build frontend assets
+* Move frontend build to backend
+* Install dependencies & set up virtual environment
+* Restart application on AWS EC2
+* Deployment with Gunicorn & Nginx
 
-### `npm test`
+## Challenges Faced
+Jenkins Permissions: EC2 required additional permission configurations for smooth pipeline execution.
+SonarQube Optimization: Initial scans included unnecessary files, slowing down pipeline execution.
+Security Considerations: CSRF protection needed to be properly configured without breaking API requests.
+HTTPS & SSL Setup: Required setting up a custom domain, Certbot SSL, and Nginx to enforce secure communication.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Key Learnings
+CI/CD automation reduces deployment errors and speeds up software releases.
+Static code analysis helps catch vulnerabilities early, improving security.
+Nginx as a reverse proxy ensures seamless handling of HTTPS traffic and improves application stability.
+Cloud-based authentication with Firebase simplifies user management while maintaining security best practices.
+AWS EC2 Elastic IP ensures high availability, preventing disruptions during instance restarts.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Future Enhancements
+Migrate to AWS Cognito for authentication for better security.
+Implement AWS CodeDeploy for streamlined CI/CD instead of Jenkins.
+Introduce automated testing in the pipeline to catch issues earlier.
+Optimize API security further by enforcing strict CORS policies and API gateway integration.
